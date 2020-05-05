@@ -18,14 +18,16 @@ import { InjectedProps } from "./connectToState";
 
 const s = StyleSheet.create({
   container: {
-    alignItems: "center",
+    height: 500,
+    marginBottom: 50,
+    alignItems: "flex-start",
   },
   form: {
     marginHorizontal: 20,
     marginVertical: 20,
   },
   inputContainer: {
-    marginLeft: 20,
+    marginLeft: 0,
     marginTop: 20,
     marginBottom: 20,
   },
@@ -109,16 +111,6 @@ export default class CreditCardInput extends Component {
 
   _focus = field => {
     if (!field) return;
-
-    const scrollResponder = this.refs.Form.getScrollResponder();
-    const nodeHandle = findNodeHandle(this.refs[field]);
-
-    NativeModules.UIManager.measureLayoutRelativeToParent(nodeHandle,
-      e => { throw e; },
-      x => {
-        scrollResponder.scrollTo({ x: Math.max(x - PREVIOUS_FIELD_OFFSET, 0), animated: true });
-        this.refs[field].focus();
-      });
   }
 
   _inputProps = field => {
@@ -192,8 +184,7 @@ export default class CreditCardInput extends Component {
         />
         <ScrollView
           ref="Form"
-          horizontal
-          keyboardShouldPersistTaps="always"
+          keyboardShouldPersistTaps="never"
           scrollEnabled={allowScroll}
           showsHorizontalScrollIndicator={false}
           style={s.form}
@@ -211,23 +202,10 @@ export default class CreditCardInput extends Component {
             containerStyle={[s.inputContainer, inputContainerStyle, { width: CARD_NUMBER_INPUT_WIDTH }]}
           />
           <CCInput
-            {...this._inputProps("expiry")}
+            {...this._inputProps("postalCode")}
             keyboardType="numeric"
-            containerStyle={[s.inputContainer, inputContainerStyle]}
+            containerStyle={[s.inputContainer, inputContainerStyle, { width: POSTAL_CODE_INPUT_WIDTH }]}
           />
-          {requiresCVC && (
-            <CCInput
-              {...this._inputProps("cvc")}
-              keyboardType="numeric"
-              containerStyle={[s.inputContainer, inputContainerStyle, { width: CVC_INPUT_WIDTH }]}
-            />
-          )}
-          {requiresPostalCode && (
-            <CCInput
-              {...this._inputProps("postalCode")}
-              containerStyle={[s.inputContainer, inputContainerStyle, { width: POSTAL_CODE_INPUT_WIDTH }]}
-            />
-          )}
         </ScrollView>
       </View>
     );

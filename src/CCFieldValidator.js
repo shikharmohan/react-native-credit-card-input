@@ -11,9 +11,9 @@ const toStatus = validation => {
 
 const FALLBACK_CARD = { gaps: [4, 8, 12], lengths: [16], code: { size: 3 } };
 export default class CCFieldValidator {
-  constructor(displayedFields, validatePostalCode) {
+  constructor(displayedFields, _validatePostalCode) {
     this._displayedFields = displayedFields;
-    this._validatePostalCode = validatePostalCode;
+    this._validatePostalCode = _validatePostalCode;
   }
 
   validateValues = (formValues) => {
@@ -21,13 +21,14 @@ export default class CCFieldValidator {
     const expiryValidation = valid.expirationDate(formValues.expiry);
     const maxCVCLength = (numberValidation.card || FALLBACK_CARD).code.size;
     const cvcValidation = valid.cvv(formValues.cvc, maxCVCLength);
+    const postalCodeValidation = this._validatePostalCode(formValues.postalCode);
 
     const validationStatuses = pick({
       number: toStatus(numberValidation),
       expiry: toStatus(expiryValidation),
       cvc: toStatus(cvcValidation),
       name: !!formValues.name ? "valid" : "incomplete",
-      postalCode: this._validatePostalCode(formValues.postalCode),
+      postalCode: postalCodeValidation,
     }, this._displayedFields);
 
     return {
