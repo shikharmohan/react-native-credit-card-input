@@ -9,7 +9,6 @@ import {
 } from 'react-native'
 
 import defaultIcons from '../Icons'
-import FlipCard from 'react-native-flip-card'
 import s from './styles'
 
 const BASE_SIZE = { width: 300, height: 190 }
@@ -83,53 +82,35 @@ const CardView = props => {
 
   return (
     <View style={[s.cardContainer, containerSize, style]}>
-      <FlipCard
-        style={{ borderWidth: 0 }}
-        flipHorizontal
-        flipVertical={false}
-        friction={10}
-        perspective={2000}
-        clickable={false}
-        flip={shouldFlip()}
+      <ImageBackground
+        style={[BASE_SIZE, s.cardFace, transform]}
+        source={imageFront}
       >
-        <ImageBackground
-          style={[BASE_SIZE, s.cardFace, transform]}
-          source={imageFront}
+        <Image
+          style={[s.icon]}
+          source={Icons[brand]}
+        />
+        <Text style={[...baseSyle, s.number, !number && s.placeholder, isFocused('number')]}>
+          {!number ? placeholder.number : number}
+        </Text>
+        <Text
+          style={[...baseSyle, s.name, !name && s.placeholder, isFocused('name')]}
+          numberOfLines={1}
         >
-          <Image
-            style={[s.icon]}
-            source={Icons[brand]}
-          />
-          <Text style={[...baseSyle, s.number, !number && s.placeholder, isFocused('number')]}>
-            {!number ? placeholder.number : number}
-          </Text>
-          <Text
-            style={[...baseSyle, s.name, !name && s.placeholder, isFocused('name')]}
-            numberOfLines={1}
-          >
-            {!name ? placeholder.name : name.toUpperCase()}
-          </Text>
-          <Text style={[s.baseText, { fontFamily }, s.expiryLabel, !expiryTitle && s.placeholder, focused === 'expiry' && s.focused]}>
-            {!expiryTitle ? placeholder.expiryTitle : expiryTitle.toUpperCase()}
-          </Text>
-          <Text style={[...baseSyle, s.expiry, !expiry && s.placeholder, isFocused('expiry')]}>
-            {!expiry ? placeholder.expiry : expiry}
-          </Text>
-          {isAmex && (
-            <Text style={[...baseSyle, s.amexCVC, !cvc && s.placeholder, isFocused('cvc')]}>
-              {!cvc ? placeholder.cvc : cvc}
-            </Text>
-          )}
-        </ImageBackground>
-        <ImageBackground
-          style={[BASE_SIZE, s.cardFace, transform]}
-          source={imageBack}
-        >
-          <Text style={[s.baseText, s.cvc, !cvc && s.placeholder, isFocused('cvc')]}>
+          {!name ? placeholder.name : name.toUpperCase()}
+        </Text>
+        <Text style={[s.baseText, { fontFamily }, s.expiryLabel, !expiryTitle && s.placeholder, focused === 'expiry' && s.focused]}>
+          {!expiryTitle ? placeholder.expiryTitle : expiryTitle.toUpperCase()}
+        </Text>
+        <Text style={[...baseSyle, s.expiry, !expiry && s.placeholder, isFocused('expiry')]}>
+          {!expiry ? placeholder.expiry : expiry}
+        </Text>
+        {isAmex && (
+          <Text style={[...baseSyle, s.amexCVC, !cvc && s.placeholder, isFocused('cvc')]}>
             {!cvc ? placeholder.cvc : cvc}
           </Text>
-        </ImageBackground>
-      </FlipCard>
+        )}
+      </ImageBackground>
     </View>
   )
 }

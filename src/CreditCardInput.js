@@ -158,8 +158,6 @@ export default class CreditCardInput extends Component {
       placeholderCardView,
       allowScroll,
       requiresName,
-      requiresCVC,
-      requiresPostalCode,
       cardScale,
       cardFontFamily,
       cardBrandIcons,
@@ -200,6 +198,11 @@ export default class CreditCardInput extends Component {
             {...this._inputProps("number")}
             keyboardType="numeric"
             containerStyle={[s.inputContainer, inputContainerStyle, { width: CARD_NUMBER_INPUT_WIDTH }]}
+          />
+          <CCInput
+            {...this._inputProps("expiry")}
+            keyboardType="numeric"
+            containerStyle={[s.inputContainer, inputContainerStyle, { width: EXPIRY_INPUT_WIDTH }]}
           />
           <CCInput
             {...this._inputProps("postalCode")}
